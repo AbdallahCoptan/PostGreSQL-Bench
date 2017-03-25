@@ -855,7 +855,7 @@ Pgbench is an excellent testing tool but keep in mind that when pgbench reports 
 
 To benchmark the production application tests must be performed that are similar to production loads and query types. The pgbench queries for example do not perform joins, where clauses using regular expressons on text fields and other query types that would be found in many applications. A suggestion for this type of testing would be to enable statement logging for postgresql, process those to find common querys and then build a test suite based on that.
 
-Much time can be wasted waiting for results from benchmark programs. In the [Creo](http://edoceo.com/creo) section is a utility called `[pg_bench_suite](http://edoceo.com/creo/pg-bench-suite)` for automating tests using pgbench. One would want to run the test suite once with the default configuration then change one parameter only and re-run the tests and compare the results. 
+Much time can be wasted waiting for results from benchmark programs. In the [Creo](http://edoceo.com/creo) section is a utility called [pg_bench_suite](http://edoceo.com/creo/pg-bench-suite) for automating tests using pgbench. One would want to run the test suite once with the default configuration then change one parameter only and re-run the tests and compare the results. 
 
 #### Further Reading 
 
