@@ -882,8 +882,12 @@ To read more about the postgreSQL benchmarking and performance tuning, please fo
 
 ##### Credits 
 @ Abdallah Ali University of Luxembourg, Luxembourg and  Suez Canal University, Egypt
-abdallah.ibrahim@uni.lu
-abdallah_zain@ci.suez.edu.eg
-abdallah.ali.ibrahim@gmail.com
-+352 661 420 855
+
+Email: abdallah.ibrahim@uni.lu,
+
+       abdallah_zain@ci.suez.edu.eg,
+
+       abdallah.ali.moawad@gmail.com,
+
+Phone: +352 661 420 855
  
