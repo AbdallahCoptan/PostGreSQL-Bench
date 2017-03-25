@@ -11,7 +11,7 @@ Database processes do complicated operations on lots of data. Complicated operat
 
 Databases have a tendency to store mission critical data, so one needs to take precautions when storing. The first line of defence (after quality hardware vendors) is the storage array or RAID. The reader is expected to know what RAID0, RAID1 and RAID5 are. RAID0 is simply not suitable, do not use this for a database filesystem. RAID1 is is favoured by many over RAID5 for the datbase system, the arguments go something like: parallel writes vs read+parity-calc+write. The options that many consider the best is RAID10 which has the reliabilty of RAID1 with performance like RAID0. RAID10 highly reccomended even though it is the most expensive option. 
 
-##Software Performance ##
+## Software Performance ##
 
 The choice of performance hardware will be wasted if the software cannot or will not use it. To this end the operating system should have some performance tuning done to it if possible, an entire discussion itself. PostgreSQL is highly configurable and has many options to improve its performance, obviously consuming resources to do so. Of course hardware, OS and RDBMS tuning will be useless if the database schema and design are not also performance oriented. 
 
@@ -21,7 +21,7 @@ Related to Linux:
 
 ***Shared Memory***
 
-PostgreSQL uses lots of this, view ipcs to prove it, the more shared memory the better as more data (tables) can be loaded. On a dedicated datbase server it's not uncommon to give half the memory to the database. The shared memory maximum value can be set in /proc/sys/kernel/shmmax. Say echo $((`cat /proc/sys/kernel/shmmax` / 1048576)) to see how many megabytes are permitted for shared memory. Set this to half of the physical memory (or some reasonable value) echo $((1024 * 1024 * 1024)) > /proc/sys/kernel/shmmax, thats 1G. PostgreSQL will also have to be told to use this, see below. 
+PostgreSQL uses lots of this, view ipcs to prove it, the more shared memory the better as more data (tables) can be loaded. On a dedicated database server it's not uncommon to give half the memory to the database. The shared memory maximum value can be set in /proc/sys/kernel/shmmax. Say echo $((`cat /proc/sys/kernel/shmmax` / 1048576)) to see how many megabytes are permitted for shared memory. Set this to half of the physical memory (or some reasonable value) echo $((1024 * 1024 * 1024)) > /proc/sys/kernel/shmmax, thats 1G. PostgreSQL will also have to be told to use this, see below. 
 
 ***File Atime***
 
@@ -31,7 +31,7 @@ Many of the file system choices have a file access time or atime attribute on th
 
 ### 2. Tune PostgreSQL Performance ###
 
-The values and suggestions expressed here are just that, it's basic rules that Edoceo uses, YMMV. As always one should experiment with what values work best for your environment. 
+The values and suggestions expressed here are just that, it's basic rules that [Edoceo](http://edoceo.com/) uses, YMMV. As always one should experiment with what values work best for your environment. 
 
 **max_connections = N**
 
@@ -51,7 +51,7 @@ Default is 1M but 2M doesn't hurt, this can also be set per connection via SET c
 
 **effective_cache_size = N**
 
-The assumption about cached files by the operating system, look in /proc/sys/fs/file-nr and file-max for clues.
+The assumption about cached files by the operating system, look in `/proc/sys/fs/file-nr` and `file-max` for clues.
 
 **log_statement = 'none'**
 
@@ -90,7 +90,8 @@ Performance is also tied to the schema and design of the system and to the data 
 In the world of PostgreSQL the standard tool of measurement is pgbench. An initial benchmark is performed to determine the baseline from which all other benchmarks will be measured. Between benchmarks the configuration of the operating system or database server can be altered to determine impact on performance. look the previous [section](#).
 
 
-##pgbench##
+## pgbench ##
+
 [pgbench](https://www.postgresql.org/docs/devel/static/pgbench.html) is a popular benchmarking tool used by many developers and hackers to do quick performance test with PostgreSQL on a system setup.
 
 **pgbench** is a simple program for running benchmark tests on **PostgreSQL**. It runs the same sequence of SQL commands over and over, possibly in multiple concurrent database sessions, and then ***calculates*** the average transaction rate (transactions per second(**tps**)). By default, pgbench tests a scenario that is loosely based on [TPC-B](http://www.tpc.org/tpcb/default.asp), involving five `SELECT, UPDATE, and INSERT` commands per transaction. However, it is easy to test other cases by writing your own transaction script files.
@@ -312,7 +313,7 @@ Since we will be using `pgbench` to measure changes in **performance**, a small 
 
 The `-s` option is used to multiply the number of rows entered into each table. In the command above, we entered a “scaling” option of `50`. This told `pgbench` to create a database with `50` times the **default size**.
 
-What this means is our `pgbench_accounts` table now has `5,000,000` records. It also means our database size is now `800MB (50 x 16MB)`. If you want to increase the database size more you should use the **-F** fillFactor and it should be usualy geater than the scalling factor. So if we use the `-F` parameter in the initialization like: 
+This means that our `pgbench_accounts` table now has `5,000,000` records. It also means our database size is now `800MB (50 x 16MB)`. If you want to increase the database size more you should use the **-F** fillFactor and it should be usually larger than the scalling factor. So if we use the `-F` parameter in the initialization like: 
 
 		
 		postgres@client1:~$ pgbench -i -h 10.10.1.200 -p 5432 ali -s 50 -F 90      
@@ -409,7 +410,7 @@ pgbench accepts the following command-line benchmarking arguments:
 
     Add the specified built-in script to the list of executed scripts. An optional integer weight after @ allows to adjust the probability of drawing the script. If not specified, it is set to 1. Available built-in scripts are: tpcb-like, simple-update and select-only. Unambiguous prefixes of built-in names are accepted. With special name list, show the list of built-in scripts and exit immediately.
 
-**`-c**` clients
+**`-c`** clients
 `--client=clients`
 
     Number of clients simulated, that is, number of concurrent database sessions. Default is 1.
@@ -444,7 +445,7 @@ pgbench accepts the following command-line benchmarking arguments:
 
     Write information about each transaction to a log file. See below for details.
 
-`**-L**` limit
+**`-L`** limit
 `--latency-limit=limit`
 
     Transaction which last more than limit milliseconds are counted and reported separately, as late.
@@ -507,7 +508,7 @@ pgbench accepts the following command-line benchmarking arguments:
 
     Run built-in select-only script. Shorthand for -b select-only.
 
-`**-t**` transactions
+**`-t`** transactions
 `--transactions=transactions`
 
     Number of transactions each client runs. Default is 10.
@@ -697,7 +698,7 @@ Example:
 \shell command literal_argument :variable ::literal_starting_with_colon
 ```
 
-#### `pgbench`: Buit-in Functions**
+#### `pgbench`: Buit-in Functions
 
 The functions listed in [Table, “pgbench Functions”](https://www.postgresql.org/docs/devel/static/pgbench.html#pgbench-functions)(for more details about `pgbench functions`) are built into pgbench and may be used in expressions appearing in [\set](https://www.postgresql.org/docs/devel/static/pgbench.html#pgbench-metacommand-set).
 
@@ -738,11 +739,151 @@ This script allows each iteration of the transaction to reference different, ran
 
 #### `pgbench`: Per-Transaction Logging
 
+With the `-l` option (but without the `--aggregate-interval` option), `pgbench` writes information about each transaction to a **log file**. The log file will be named `prefix.nnn`, where prefix defaults to `pgbench_log`, and `nnn` is the `PID` of the pgbench process. The prefix can be changed by using the `--log-prefix` option. If the `-j` option is 2 or higher, so that there are *multiple worker threads*, **each will have its own log file**. The first worker will use the same name for its log file as in the standard single worker case. The additional log files for the other workers will be named `prefix.nnn.mmm`, where `mmm` is a sequential number for each worker starting with `1`.
+
+**The format of the log is**:
+
+`` client_id transaction_no time script_no time_epoch time_us [ schedule_lag ]
+``
+
+where `client_id` indicates which client session ran the transaction, `transaction_no` counts how many transactions have been run by that session, `time` is the total elapsed transaction time in microseconds, `script_no` identifies which script file was used (useful when multiple scripts were specified with `-f` or `-b`), and `time_epoch/time_us` are a Unix-epoch time stamp and an offset in microseconds (suitable for creating an ISO 8601 time stamp with fractional seconds) showing when the transaction completed. The `schedule_lag` field is the difference between the transaction's scheduled start time, and the time it actually started, in microseconds. It is only present when the `--rate` option is used. When both `--rate` and `--latency-limit` are used, the time for a skipped transaction will be reported as skipped.
+
+**Here is a snippet of a log file generated in a single-client run**:
+
+```
+0 199 2241 0 1175850568 995598
+0 200 2465 0 1175850568 998079
+0 201 2513 0 1175850569 608
+0 202 2038 0 1175850569 2663
+```
+
+
+**Another example with `--rate=100` and `--latency-limit=5` (note the additional `schedule_lag` column)**:
+
+```
+0 81 4621 0 1412881037 912698 3005
+0 82 6173 0 1412881037 914578 4304
+0 83 skipped 0 1412881037 914578 5217
+0 83 skipped 0 1412881037 914578 5099
+0 83 4722 0 1412881037 916203 3108
+0 84 4142 0 1412881037 918023 2333
+0 85 2465 0 1412881037 919759 740
+```
+
+In this example, `transaction 82` was **late**, because its `latency (6.173 ms)` was over the `5 ms` limit. The next two transactions were **skipped**, because they were already late before they were even started.
+
+When running a long test on hardware that can handle a lot of transactions, the log files can become very large. The `--sampling-rate` option can be used to log **only a random sample of transactions**.
+
+#### Aggregated Logging
+
+With the --aggregate-interval option, a different format is used for the log files:
+
+
+```
+interval_start num_transactions sum_latency sum_latency_2 min_latency max_latency [ sum_lag sum_lag_2 min_lag max_lag [ skipped ] ]
+```
+
+where `interval_start` is the start of the interval (as a Unix epoch time stamp), `num_transactions` is the number of transactions within the interval, `sum_latency` is the sum of the transaction latencies within the interval, `sum_latency_2` is the sum of squares of the transaction latencies within the interval, `min_latency` is the minimum latency within the interval, and `max_latency` is the maximum latency within the interval. The next fields, `sum_lag`, `sum_lag_2`, `min_lag`, and `max_lag`, are only present if the `--rate` option is used. They provide statistics about the time each transaction had to wait for the previous one to finish, i.e. the difference between each transaction's scheduled start time and the time it actually started. The very last field, `skipped`, is only present if the `--latency-limit` option is used, too. It counts the number of transactions skipped because they would have started too late. Each transaction is counted in the interval when it was committed.
+
+Here is some example output:
+
+```
+1345828501 5601 1542744 483552416 61 2573
+1345828503 7884 1979812 565806736 60 1479
+1345828505 7208 1979422 567277552 59 1391
+1345828507 7685 1980268 569784714 60 1398
+1345828509 7073 1979779 573489941 236 1411
+```
+
+Notice that while the plain (unaggregated) log file shows which script was used for each transaction, the aggregated log does not. Therefore if you need per-script data, you need to aggregate the data on your own.
+
+#### Per-Statement Latencies
+
+With the `-r` option, `pgbench` collects the elapsed transaction time of each statement executed by every client. It then reports an average of those values, referred to as the latency for each statement, after the benchmark has finished.
+
+**For the default script, the output will look similar to this**:
+
+````
+starting vacuum...end.
+transaction type: <builtin: TPC-B (sort of)>
+scaling factor: 1
+query mode: simple
+number of clients: 10
+number of threads: 1
+number of transactions per client: 1000
+number of transactions actually processed: 10000/10000
+latency average = 15.844 ms
+latency stddev = 2.715 ms
+tps = 618.764555 (including connections establishing)
+tps = 622.977698 (excluding connections establishing)
+script statistics:
+ - statement latencies in milliseconds:
+        0.002  \set aid random(1, 100000 * :scale)
+        0.005  \set bid random(1, 1 * :scale)
+        0.002  \set tid random(1, 10 * :scale)
+        0.001  \set delta random(-5000, 5000)
+        0.326  BEGIN;
+        0.603  UPDATE pgbench_accounts SET abalance = abalance + :delta WHERE aid = :aid;
+        0.454  SELECT abalance FROM pgbench_accounts WHERE aid = :aid;
+        5.528  UPDATE pgbench_tellers SET tbalance = tbalance + :delta WHERE tid = :tid;
+        7.335  UPDATE pgbench_branches SET bbalance = bbalance + :delta WHERE bid = :bid;
+        0.371  INSERT INTO pgbench_history (tid, bid, aid, delta, mtime) VALUES (:tid, :bid, :aid, :delta, CURRENT_TIMESTAMP);
+        1.212  END;
+````
+
+*If multiple script files are specified, the averages are reported separately for each script file*.
+
+Note that collecting the additional timing information needed for `per-statement latency` computation adds some overhead. This will slow average execution speed and lower the computed `TPS`. The amount of slowdown varies significantly depending on platform and hardware. Comparing average `TPS` values with and without latency reporting enabled is a good way to measure if the timing overhead is significant.
 
 
 
+#### Good Practice 
+It is very easy to use pgbench to produce completely meaningless numbers. Here are some guidelines to help you get useful results.
+
+In the first place, never believe any test that runs for only a few seconds. Use the `-t` or `-T` option to make the run last at least a few minutes, so as to average out noise. In some cases you could need hours to get numbers that are reproducible. It's a good idea to try the test run a few times, to find out if your numbers are reproducible or not.
+
+For the default TPC-B-like test scenario, the initialization scale factor (`-s`) should be at least as large as the largest number of clients you intend to test (`-c`); else you'll mostly be measuring update contention. There are only `-s` rows in the `pgbench_branches` table, and every transaction wants to update one of them, so `-c` values in excess of `-s` will undoubtedly result in lots of transactions blocked waiting for other transactions.
+
+The default test scenario is also quite sensitive to how long it's been since the tables were initialized: accumulation of dead rows and dead space in the tables changes the results. To understand the results you must keep track of the total number of updates and when vacuuming happens. If autovacuum is enabled it can result in unpredictable changes in measured performance.
+
+A limitation of `pgbench` is that it can itself become the bottleneck when trying to test a large number of client sessions. This can be alleviated by running pgbench on a different machine from the database server, although low network latency will be essential. It might even be useful to run several `pgbench` instances concurrently, on several client machines, against the same database server.
+
+#### Benchmark Test
+To successfully run a benchmark the tests must be done many times and then averaged out, standard deviation will tell the quality of the results. Between each benchmark test change only one configuration parameter, otherwise the impact of each change will be lost.
+
+Pgbench is an excellent testing tool but keep in mind that when pgbench reports 417 TPS the production application will not get 417 TPS. The number will likely be very different from pgbench unless the production application is doing the exact same thing as pgbench. What this means is that pgbench will test the database, not the application. By performing the same simple tests repeatedly the benchmark results are accurate for measuring the same flavor of queries only.
+
+To benchmark the production application tests must be performed that are similar to production loads and query types. The pgbench queries for example do not perform joins, where clauses using regular expressons on text fields and other query types that would be found in many applications. A suggestion for this type of testing would be to enable statement logging for postgresql, process those to find common querys and then build a test suite based on that.
+
+Much time can be wasted waiting for results from benchmark programs. In the [Creo](http://edoceo.com/creo) section is a utility called `[pg_bench_suite](http://edoceo.com/creo/pg-bench-suite)` for automating tests using pgbench. One would want to run the test suite once with the default configuration then change one parameter only and re-run the tests and compare the results. 
+
+#### Further Reading 
+
+To read more about the postgreSQL benchmarking and performance tuning, please follow the following links:
+
+1. [Basic postgresql benchmarking](http://blog.vladimirm.com/2013/11/basic-postgresql-benchmarking-in-10-minutes-with-pgbench/).
+2. [PostgreSQL Benchmarking- Edoceo](http://edoceo.com/howto/postgresql-benchmark).
+3. [Tuning Your PostgreSQL Server](https://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server).
+4. [Performance Tuning Postgresql- Edoceo](http://edoceo.com/howto/postgresql-performance).
+5. [Tuning PostgreSQL with pgbench](https://blog.codeship.com/tuning-postgresql-with-pgbench/).
+6. [pgbench](https://www.postgresql.org/docs/devel/static/pgbench.html).
+7. [Postgres Outperforms MongoDB](https://www.enterprisedb.com/postgres-plus-edb-blog/marc-linster/postgres-outperforms-mongodb-and-ushers-new-developer-reality).
+8. [Benchmark: PostgreSQL, MongoDB, Neo4j, OrientDB and ArangoDB](https://www.arangodb.com/2015/10/benchmark-postgresql-mongodb-arangodb/).
+9. [The ececution plan(cost) for a DB statment- Benchmark a statement](https://www.postgresql.org/docs/current/static/sql-explain.html).
+10. [pgbench-wiki](https://wiki.postgresql.org/wiki/Pgbench).
+11. [Browse the PostgreSQL- Bench on GitHub](https://github.com/AbdallahCoptan/PostGreSQL-Bench).
+12. [TPC-H](http://tpc.org/tpch/default.asp ). 
+13. [Use the TPC-H-like(use only the dbgen a qgen parts) benchmark](https://github.com/AbdallahCoptan/pg_tpch).
+14. [Automates running PostgreSQL's built-in pgbench tool in a useful ways](https://github.com/AbdallahCoptan/pgbench-tools).
+15. [HammerDB](http://www.hammerdb.com/).
+16. [Book: Database Benchmarking](https://www.goodreads.com/book/show/808733.Database_Benchmarking).
 
 
-On this page are recommendations from community on best ways to test with pgbench on a relatively bigger scale so that the frame of reference is consistent for the rest of the community reading into the results of `pgbench`.
 
-
+##### Credits 
+@ Abdallah Ali University of Luxembourg, Luxembourg and  Suez Canal University, Egypt
+abdallah.ibrahim@uni.lu
+abdallah_zain@ci.suez.edu.eg
+abdallah.ali.ibrahim@gmail.com
++352 661 420 855
+ 
