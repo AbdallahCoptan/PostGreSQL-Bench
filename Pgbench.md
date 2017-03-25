@@ -885,9 +885,9 @@ To read more about the postgreSQL benchmarking and performance tuning, please fo
 
 Email: abdallah.ibrahim@uni.lu,
 
-       abdallah_zain@ci.suez.edu.eg,
+abdallah_zain@ci.suez.edu.eg,
 
-       abdallah.ali.moawad@gmail.com,
+abdallah.ali.moawad@gmail.com,
 
 Phone: +352 661 420 855
  
