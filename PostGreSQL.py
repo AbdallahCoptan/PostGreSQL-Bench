@@ -58,7 +58,7 @@ print "================================Postgres Terminal========================
 print "================================Initializing Test=======================================\n\n"
 
 #pgbench -i -h 10.10.1.200 -p 5432 ali -s 10 -F 20
-#subprocess.call(["sudo", "-u", "postgres","pgbench", "-i","-h", host,"-p",port ,dbname,"-s",scaligFactor,"-F",fillFactor],stdout=subprocess.PIPE)
+subprocess.call(["sudo", "-u", "postgres","pgbench", "-i","-h", host,"-p",port ,dbname,"-s",scaligFactor,"-F",fillFactor],stdout=subprocess.PIPE)
 print "================================PGBENCH TEST Initialized=======================================\n\n\n"
 
 print "================================Pgbench TEST will bench postgresql Server =======================================\n\n\n"
