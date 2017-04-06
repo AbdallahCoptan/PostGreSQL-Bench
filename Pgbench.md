@@ -857,6 +857,11 @@ To benchmark the production application tests must be performed that are similar
 
 Much time can be wasted waiting for results from benchmark programs. In the [Creo](http://edoceo.com/creo) section is a utility called [pg_bench_suite](http://edoceo.com/creo/pg-bench-suite) for automating tests using pgbench. One would want to run the test suite once with the default configuration then change one parameter only and re-run the tests and compare the results. 
 
+#### pgbench: Some Benechmarking Results 
+
+![TPS and Response Time (Avg. Latency)](Pgbench-TPS-RT.png)
+
+
 #### Further Reading 
 
 To read more about the postgreSQL benchmarking and performance tuning, please follow the following links:
