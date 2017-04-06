@@ -861,6 +861,7 @@ Much time can be wasted waiting for results from benchmark programs. In the [Cre
 
 ![TPS and Response Time (Avg. Latency)](Pgbench-TPS-RT.png)
 
+The previous figure show number of transactions per client on the x axis and on the y axis the TPS (transaction per second) including and exluding the connection transactions. In addition to the TPS on the y axis, there is the response time or the average latency.
 
 #### Further Reading 
 
